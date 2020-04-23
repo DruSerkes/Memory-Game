@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Memory Game!</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <h1>Memory Game!</h1>
+    
+    <!-- Stats section  -->
+    <div id='stats'>
+      <h2 id='tries'>Guesses: 0</h2>
+      <h2 id='high-score'>High Score: </h2>
+    </div>
+    <!-- End stats  -->
+
+    <!-- Game section  -->
+    <div id="game">
+    </div>
+    <!-- End Game section  -->
+    
+    <!-- Game form  -->
+    <form>
+      <h2>How many cards would you like to match?</h2>
+      <input type="number" step="2" id="card-amount" placeholder="Enter a number">
+      <button>Start Game</button>
+    </form>
+    <!-- End game form  -->
+
+    <!-- Start Game overlay -->
+    <div id="start-game">
+      <h2>Click to Start Game!</h2>
+    </div>
+    <!-- End start game overlay  -->
+
+    <!-- Game Over & Restart Section -->
+    <div id='game-over'>
+      <h2>Game Over!</h2>
+      <button id='play-again'>Play Again</button>
+    </div>
+    <!-- End game over  -->
+
+    <script src="scriptFurther.js"></script>
+  </body>
+</html>
