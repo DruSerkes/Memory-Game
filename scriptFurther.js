@@ -1,29 +1,23 @@
 const gameContainer = document.getElementById("game");
-
-let randomColors;
-let numberOfCards;
+const startGame = document.getElementById('start-game');
+const gameForm = document.querySelector('form');
+const gameOverDiv = document.getElementById('game-over');
+const playAgain = document.getElementById('play-again');
+const highScore = document.getElementById('high-score');
+let numTries = document.getElementById('tries');
+let choices = [];
+let tries = 0;
 let toGo = 0;
-let shuffledRandomColors;
+
 //Helper function to generate random colors 
-let getRandomColor = () => {
-  let randomColor = '#'+Math.floor(Math.random()*16777215).toString(16);
+const getRandomColor = () => {
+  let randomColor = '#'+Math.floor(Math.random()*16777215).toString(16); // switch to RGB method
   return randomColor;
 }
-let startGame = document.getElementById('start-game');
-let gameForm = document.querySelector('form');
-let choices = [];
-let tries = 0; 
-let numTries = document.getElementById('tries');
-let highScore = document.getElementById('high-score');
-if (localStorage.bestScore){
-  highScore.innerHTML = `High Score: ${JSON.parse(localStorage.bestScore)}`;
-}
-let gameOverDiv = document.getElementById('game-over');
-let playAgain = document.getElementById('play-again');
 
 // here is a helper function to shuffle an array
 // it returns the same array with values shuffled
-// it is based on an algorithm called Fisher Yates if you want ot research more
+// it is based on an algorithm called Fisher Yates if you want to research more
 function shuffle(array) {
   let counter = array.length;
 
@@ -65,11 +59,19 @@ function createDivsForColors(colorArray) {
 
 //play game helper function
 const playGame = () => {
+  //check localStorage for high score
+  if (localStorage.bestScore){
+    highScore.innerHTML = `High Score: ${JSON.parse(localStorage.bestScore)}`;
+  } else {
+    highScore.innerHTML = `High Score: N/A`;
+  }
+
+  //Turn on the game display, remove gameForm display, build card divs with random colors 
   gameForm.style.display = 'block';
   gameForm.addEventListener('submit', event => {
     event.preventDefault();
-    randomColors = [];
-    numberOfCards = parseInt(document.querySelector('input').value);
+    const randomColors = [];
+    let numberOfCards = parseInt(document.querySelector('input').value);
     if (numberOfCards <= 0){
         return;
     }
@@ -81,7 +83,7 @@ const playGame = () => {
       toGo++;
   }
     gameForm.style.display = 'none';
-    shuffledRandomColors = shuffle(randomColors);
+    let shuffledRandomColors = shuffle(randomColors);
     createDivsForColors(shuffledRandomColors);
 })
 }
@@ -140,7 +142,7 @@ const noMatch = () => {
 }, 1000)
 }
 
-// TODO: Implement this function!
+// TODO: Refactor so logic is separate from DOM
 function handleCardClick(event) {
 
   // Nothing happens if you click the same card twice 
