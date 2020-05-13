@@ -111,10 +111,9 @@ const gameOver = () => {
   // update high score if necessary
   if (!localStorage.bestScore){
     localStorage.setItem('bestScore', JSON.stringify(tries));
-  } else {
-    if (tries < JSON.parse(localStorage.bestScore)){
+  } 
+  else if (tries < JSON.parse(localStorage.bestScore){  
       localStorage.bestScore = tries; 
-    }
   }
   // bring up the Game Over overlay 
   gameOverDiv.style.display = 'block';
@@ -125,7 +124,7 @@ const gameOver = () => {
     numTries.innerHTML = `Guesses: ${tries}`;
     gameOverDiv.style.display = 'none';
     playGame();
-    })
+    });
   }
 
 //match helper function 
@@ -174,10 +173,8 @@ const updateTries = tries => numTries.innerHTML = `Guesses: ${tries}`;
 function handleCardClick(event) {
 
   // Nothing happens if you click the same card twice 
-  if (choices.length === 1){
-    if (event.target === choices[0]['card']){
+  if (choices.length === 1 && event.target === choices[0]['card']){ 
       return;
-    }
   }
 
   // if fewer than 2 choices are made allow logic 
