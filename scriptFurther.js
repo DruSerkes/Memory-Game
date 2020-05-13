@@ -71,26 +71,39 @@ const playGame = () => {
     highScore.innerHTML = `High Score: N/A`;
   }
 
-  //Turn on the game display, remove gameForm display, build card divs with random colors 
+  //Turn on the game display and listen for submit remove gameForm display, build card divs with random colors 
   gameForm.style.display = 'block';
   gameForm.addEventListener('submit', event => {
     event.preventDefault();
     const randomColors = [];
     let numberOfCards = parseInt(document.querySelector('input').value);
+    // Handle invalid value 
     if (numberOfCards <= 0){
-        return;
+        return alert("Please enter a positive, even integer");
     }
+    //Clear field 
     document.querySelector('input').value = ''; 
-    for (let i = 0; i < numberOfCards / 2; i++){
-      let newColor = getRandomColor(); 
-      randomColors.push(newColor);
-      randomColors.push(newColor);
-      toGo++;
-  }
+    // fill random colors 
+    fillWithRandomColors(randomColors, numberOfCards);
+    //turn off the form 
     gameForm.style.display = 'none';
     let shuffledRandomColors = shuffle(randomColors);
+    // display shuffled cards face down  
     createDivsForColors(shuffledRandomColors);
 })
+}
+
+/* Helper function to fill an array with random colors 
+ * randomColors - the array to be filled with colors, 
+ * numberOfCards - the number of cards to put in the array (must be even) 
+ */
+const fillWithRandomColors = (randomColors, numberOfCards) => {
+  for (let i = 0; i < numberOfCards / 2; i++){
+    let newColor = getRandomColor(); 
+    randomColors.push(newColor);
+    randomColors.push(newColor);
+    toGo++;
+  }
 }
 
 //gameOver helper function
@@ -103,9 +116,9 @@ const gameOver = () => {
       localStorage.bestScore = tries; 
     }
   }
-
   // bring up the Game Over overlay 
   gameOverDiv.style.display = 'block';
+  // Clicking "Play Again" resets tries, empties the game container, and restarts the game 
   playAgain.addEventListener('click', event => { 
     gameContainer.innerHTML = '';
     tries = 0;
