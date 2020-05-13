@@ -1,3 +1,4 @@
+//Global variables
 const gameContainer = document.getElementById("game");
 const startGame = document.getElementById('start-game');
 const gameForm = document.querySelector('form');
@@ -11,9 +12,13 @@ let toGo = 0;
 
 //Helper function to generate random colors 
 const getRandomColor = () => {
-  let randomColor = '#'+Math.floor(Math.random()*16777215).toString(16); // switch to RGB method
-  return randomColor;
+  const r = Math.floor(Math.random()*256);
+  const g = Math.floor(Math.random()*256);
+  const b = Math.floor(Math.random()*256);
+  return `rgb(${r},${g},${b})`
 }
+
+  
 
 // here is a helper function to shuffle an array
 // it returns the same array with values shuffled
@@ -142,7 +147,17 @@ const noMatch = () => {
 }, 1000)
 }
 
-// TODO: Refactor so logic is separate from DOM
+// Helper function to reveal card color
+const changeCardColor = (event) => {
+  let card = event.target
+  let color = card.classList[0]
+  card.style.backgroundColor = color;
+  event.target.style.opacity = "1";
+}
+
+// Helper function to update number of Guesses on the DOM 
+const updateTries = tries => numTries.innerHTML = `Guesses: ${tries}`;
+
 function handleCardClick(event) {
 
   // Nothing happens if you click the same card twice 
@@ -154,29 +169,24 @@ function handleCardClick(event) {
 
   // if fewer than 2 choices are made allow logic 
   if (choices.length < 2){
-    let card = event.target
-    let color = card.classList[0]
-    card.style.backgroundColor = color;
-    event.target.style.opacity = "1";
-
-    choices.push({'card': card, 'color': color});
+    changeCardColor(event);
+    choices.push({'card': event.target, 'color': event.target.classList[0]});
   }
   
-  //if there are 2 choices made, handle match or noMatch
+  // if there are 2 choices made
   if (choices.length === 2){
+    // update the number of guesses
     tries++
-    numTries.innerHTML = `Guesses: ${tries}`;
-
+    updateTries(tries);
+    // remove the event listener 
     for (let div of document.querySelectorAll('#game > div')){
       div.removeEventListener('click', handleCardClick);
     }
-
+    // handle match or no match 
     if (choices[0].color === choices[1].color && choices[0].card !== choices[1].card){
       match();
-      console.log("Match!")
     } else {
       noMatch();
-      console.log("No Match!")
     }
   }
 }
